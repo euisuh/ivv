@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { Button, Typography, Box, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -8,6 +8,7 @@ function App() {
   const [isNoButtonMoved, setIsNoButtonMoved] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const yesButtonRef = useRef<HTMLButtonElement>(null);
   const noButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -16,28 +17,28 @@ function App() {
   };
 
   const handleNoClick = () => {
-    const container = containerRef.current;
+    const content = contentRef.current;
     const yesButton = yesButtonRef.current;
     const noButton = noButtonRef.current;
 
-    if (container && yesButton && noButton) {
-      const containerRect = container.getBoundingClientRect();
+    if (content && yesButton && noButton) {
+      const contentRect = content.getBoundingClientRect();
       const yesRect = yesButton.getBoundingClientRect();
       const noRect = noButton.getBoundingClientRect();
 
-      let newTop: number;
-      let newLeft: number;
+      let newTop = 0;
+      let newLeft = 0;
       let isOverlapping = true;
       let attempts = 0;
 
       while (isOverlapping && attempts < 100) {
         attempts++;
 
-        // Random positions within the container bounds
-        newTop = Math.random() * (containerRect.height - noRect.height);
-        newLeft = Math.random() * (containerRect.width - noRect.width);
+        // Generate random positions within the content area bounds
+        newTop = Math.random() * (contentRect.height - noRect.height) * 0.7;
+        newLeft = Math.random() * (contentRect.width - noRect.width) * 0.7;
 
-        // Adjusted positions relative to container
+        // Position of the "No" button relative to the content area
         const noButtonRect = {
           top: newTop,
           bottom: newTop + noRect.height,
@@ -45,11 +46,12 @@ function App() {
           right: newLeft + noRect.width,
         };
 
+        // Position of the "Yes" button relative to the content area
         const yesButtonRect = {
-          top: yesRect.top - containerRect.top,
-          bottom: yesRect.bottom - containerRect.top,
-          left: yesRect.left - containerRect.left,
-          right: yesRect.right - containerRect.left,
+          top: yesRect.top - contentRect.top,
+          bottom: yesRect.bottom - contentRect.top,
+          left: yesRect.left - contentRect.left,
+          right: yesRect.right - contentRect.left,
         };
 
         // Check for overlap
@@ -86,11 +88,14 @@ function App() {
       {!showVideo ? (
         <>
           <Box
+            ref={contentRef}
             sx={{
               position: "absolute",
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
+              padding: 2,
+              border: "1px solid transparent",
             }}
           >
             <Typography variant="h2">Do you love me?</Typography>
@@ -121,7 +126,6 @@ function App() {
                   position: isNoButtonMoved ? "absolute" : "static",
                   top: isNoButtonMoved ? noButtonPosition.top : "auto",
                   left: isNoButtonMoved ? noButtonPosition.left : "auto",
-                  transform: isNoButtonMoved ? "none" : "none",
                 }}
               >
                 No
