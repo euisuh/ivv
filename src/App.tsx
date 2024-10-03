@@ -5,10 +5,8 @@ function App() {
   const [noButtonPosition, setNoButtonPosition] = useState({ top: 0, left: 0 });
   const [isNoButtonMoved, setIsNoButtonMoved] = useState(false);
 
-  const containerRef = useRef(null);
-  const contentRef = useRef(null);
-  const yesButtonRef = useRef(null);
-  const noButtonRef = useRef(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const noButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const handleYesClick = () => {
     window.open("https://youtu.be/sVTy_wmn5SU?si=ZPVje1O4vDzokBLt", "_blank");
@@ -34,7 +32,6 @@ function App() {
     <Box
       height="100vh"
       width="100vw"
-      ref={containerRef}
       display="flex"
       flexDirection="column"
       justifyContent="center"
@@ -61,12 +58,7 @@ function App() {
             // Removed position: "relative" from here
           }}
         >
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleYesClick}
-            ref={yesButtonRef}
-          >
+          <Button variant="contained" color="primary" onClick={handleYesClick}>
             Yes
           </Button>
           <Button
