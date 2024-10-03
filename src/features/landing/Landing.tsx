@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Box, Button, Typography } from "@mui/material";
 
-function App() {
+function Landing() {
   const [noButtonPosition, setNoButtonPosition] = useState({ top: 0, left: 0 });
   const [isNoButtonMoved, setIsNoButtonMoved] = useState(false);
 
@@ -55,7 +55,6 @@ function App() {
             justifyContent: "center",
             alignItems: "center",
             gap: 2,
-            // Removed position: "relative" from here
           }}
         >
           <Button variant="contained" color="primary" onClick={handleYesClick}>
@@ -80,4 +79,4 @@ function App() {
   );
 }
 
-export default App;
+export default Landing;
