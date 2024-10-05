@@ -24,10 +24,6 @@ export const Error = () => {
             {error.status} {error.statusText}
           </i>
         </Typography>
-      ) : error instanceof Error ? (
-        <Typography color="text.secondary">
-          <i>{error.message}</i>
-        </Typography>
       ) : (
         <Typography color="text.secondary">
           <i>An unknown error occurred.</i>
