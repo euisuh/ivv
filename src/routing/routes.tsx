@@ -2,6 +2,7 @@ import { Navigate } from "react-router-dom";
 
 import Landing from "../features/landing/Landing";
 import Error from "./Error";
+import Gallery from "../features/gallery/Gallery";
 
 export const getRoutes = () => {
   return [
@@ -15,6 +16,12 @@ export const getRoutes = () => {
       element: <Landing />,
       errorElement: <Error />,
     },
+    {
+      path: "/gallery",
+      element: <Gallery />,
+      errorElement: <Error />,
+    },
+
     {
       path: "*",
       element: <Error />,
