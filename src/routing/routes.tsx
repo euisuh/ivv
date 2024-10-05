@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 import Landing from "../features/landing/Landing";
 import Error from "./Error";
@@ -7,24 +7,29 @@ import Gallery from "../features/gallery/Gallery";
 export const getRoutes = () => {
   return [
     {
-      path: "/",
-      element: <Navigate to="/landing" replace />,
+      path: "/ivv",
+      element: <Outlet />,
       errorElement: <Error />,
-    },
-    {
-      path: "/landing",
-      element: <Landing />,
-      errorElement: <Error />,
-    },
-    {
-      path: "/gallery",
-      element: <Gallery />,
-      errorElement: <Error />,
-    },
-
-    {
-      path: "*",
-      element: <Error />,
+      children: [
+        {
+          index: true,
+          element: <Navigate to="landing" replace />,
+        },
+        {
+          path: "landing",
+          element: <Landing />,
+          errorElement: <Error />,
+        },
+        {
+          path: "gallery",
+          element: <Gallery />,
+          errorElement: <Error />,
+        },
+        {
+          path: "*",
+          element: <Error />,
+        },
+      ],
     },
   ];
 };
