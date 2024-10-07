@@ -9,7 +9,7 @@ export const getRoutes = () => {
       errorElement: <Error />,
     },
     {
-      path: "*",
+      path: "/ivv/*",
       element: <Error />,
     },
   ];
