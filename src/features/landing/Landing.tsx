@@ -1,15 +1,25 @@
 import { useState, useRef } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Alert, Box, Button, Snackbar, Typography } from "@mui/material";
+import { DateTime } from "luxon";
 
 function Landing() {
   const [noButtonPosition, setNoButtonPosition] = useState({ top: 0, left: 0 });
   const [isNoButtonMoved, setIsNoButtonMoved] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const contentRef = useRef<HTMLDivElement | null>(null);
   const noButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const handleYesClick = () => {
-    window.open("https://youtu.be/sVTy_wmn5SU?si=ZPVje1O4vDzokBLt", "_blank");
+    const now = DateTime.now().setZone("America/Montreal");
+    const targetDate = DateTime.fromObject(
+      { year: 2024, month: 10, day: 24 },
+      { zone: "America/Montreal" }
+    );
+
+    if (now < targetDate) setOpenSnackbar(true);
+    else
+      window.open("https://youtu.be/sVTy_wmn5SU?si=ZPVje1O4vDzokBLt", "_blank");
   };
 
   const handleNoClick = () => {
@@ -26,6 +36,10 @@ function Landing() {
       setNoButtonPosition({ top: newTop, left: newLeft });
       setIsNoButtonMoved(true);
     }
+  };
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
   };
 
   return (
@@ -75,6 +89,21 @@ function Landing() {
           </Button>
         </Box>
       </Box>
+
+      <Snackbar
+        open={openSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="warning"
+          sx={{ width: "100%" }}
+        >
+          It's a little early! Please wait until after October 24th, 2024.
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
