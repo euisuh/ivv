@@ -1,14 +1,46 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Alert, Box, Button, Snackbar, Typography } from "@mui/material";
 import { DateTime } from "luxon";
+
+import background1 from "../../assets/background/1.jpg";
+import background2 from "../../assets/background/2.jpg";
+import background3 from "../../assets/background/3.jpg";
+import background4 from "../../assets/background/4.jpg";
+import background5 from "../../assets/background/5.jpg";
+import background6 from "../../assets/background/6.jpg";
+import background7 from "../../assets/background/7.jpg";
+import background8 from "../../assets/background/8.jpg";
+import background9 from "../../assets/background/9.jpg";
+import background10 from "../../assets/background/10.jpg";
 
 function Landing() {
   const [noButtonPosition, setNoButtonPosition] = useState({ top: 0, left: 0 });
   const [isNoButtonMoved, setIsNoButtonMoved] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [isBackgroundChanged, setIsBackgroundChanged] = useState(false);
+  const [text, setText] = useState("Do you love me?");
+  const [randomBackground, setRandomBackground] = useState<string>("");
+  const [numberAttempt, setNumberAttempt] = useState(0);
 
   const contentRef = useRef<HTMLDivElement | null>(null);
   const noButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  const backgrounds = [
+    background1,
+    background2,
+    background3,
+    background4,
+    background5,
+    background6,
+    background7,
+    background8,
+    background9,
+    background10,
+  ];
+
+  useEffect(() => {
+    setRandomBackground(backgrounds[numberAttempt % backgrounds.length]);
+  }, [numberAttempt]);
 
   const handleYesClick = () => {
     const now = DateTime.now().setZone("America/Montreal");
@@ -22,7 +54,19 @@ function Landing() {
       window.open("https://youtu.be/sVTy_wmn5SU?si=ZPVje1O4vDzokBLt", "_blank");
   };
 
+  const changeBackgroundAndTextTemporarily = () => {
+    setNumberAttempt(numberAttempt + 1);
+    setIsBackgroundChanged(true);
+    setText("Are you sure?");
+
+    setTimeout(() => {
+      setIsBackgroundChanged(false);
+      setText("Do you love me?");
+    }, 1000);
+  };
+
   const handleNoClick = () => {
+    changeBackgroundAndTextTemporarily();
     const content = contentRef.current;
     const noButton = noButtonRef.current;
 
@@ -45,12 +89,12 @@ function Landing() {
   return (
     <Box
       height="100vh"
-      width="100vw"
+      width="90vw"
       display="flex"
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      sx={{ textAlign: "center" }}
+      sx={{ textAlign: "center", margin: "auto" }}
     >
       <Box
         ref={contentRef}
@@ -59,9 +103,16 @@ function Landing() {
           height: "90%",
           position: "relative",
           alignContent: "center",
+          backgroundImage: `url(${
+            isBackgroundChanged ? randomBackground : ""
+          })`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: isBackgroundChanged ? "0.6" : "",
         }}
       >
-        <Typography variant="h2">Do you love me?</Typography>
+        <Typography variant="h2">{text}</Typography>
         <Box
           sx={{
             mt: 4,
@@ -71,7 +122,12 @@ function Landing() {
             gap: 2,
           }}
         >
-          <Button variant="contained" color="primary" onClick={handleYesClick}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleYesClick}
+            sx={{ display: isBackgroundChanged ? "none" : "" }}
+          >
             Yes
           </Button>
           <Button
@@ -83,6 +139,7 @@ function Landing() {
               position: isNoButtonMoved ? "absolute" : "static",
               top: isNoButtonMoved ? noButtonPosition.top : "auto",
               left: isNoButtonMoved ? noButtonPosition.left : "auto",
+              display: isBackgroundChanged ? "none" : "",
             }}
           >
             No
