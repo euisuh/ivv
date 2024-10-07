@@ -38,10 +38,6 @@ function Landing() {
     background10,
   ];
 
-  useEffect(() => {
-    setRandomBackground(backgrounds[numberAttempt % backgrounds.length]);
-  }, [numberAttempt]);
-
   const handleYesClick = () => {
     const now = DateTime.now().setZone("America/Montreal");
     const targetDate = DateTime.fromObject(
@@ -56,6 +52,7 @@ function Landing() {
 
   const changeBackgroundAndTextTemporarily = () => {
     setNumberAttempt(numberAttempt + 1);
+    setRandomBackground(backgrounds[numberAttempt % backgrounds.length]);
     setIsBackgroundChanged(true);
     setText("Are you sure?");
 
