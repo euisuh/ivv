@@ -62,7 +62,7 @@ function Landing() {
     setTimeout(() => {
       setIsBackgroundChanged(false);
       setText("Do you love me?");
-    }, 1000);
+    }, 1500);
   };
 
   const handleNoClick = () => {
