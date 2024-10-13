@@ -38,6 +38,13 @@ function Landing() {
     background10,
   ];
 
+  useEffect(() => {
+    backgrounds.forEach((bg) => {
+      const img = new Image();
+      img.src = bg;
+    });
+  }, []);
+
   const handleYesClick = () => {
     const now = DateTime.now().setZone("America/Montreal");
     const targetDate = DateTime.fromObject(
@@ -47,7 +54,10 @@ function Landing() {
 
     if (now < targetDate) setOpenSnackbar(true);
     else
-      window.open("https://youtu.be/sVTy_wmn5SU?si=ZPVje1O4vDzokBLt", "_blank");
+      window.open(
+        "https://www.youtube.com/watch?v=zPJHWmrBUIg&list=PLyEYrirr82njPWseqP3uMrF9t56VsJG0E",
+        "_blank"
+      );
   };
 
   const changeBackgroundAndTextTemporarily = () => {
