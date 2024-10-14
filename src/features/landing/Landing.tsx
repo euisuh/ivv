@@ -38,6 +38,18 @@ function Landing() {
     background10,
   ];
 
+  const noMessages = [
+    "Oops! I think you clicked the wrong button! 😆",
+    "Wait, did I hear that right? 😳",
+    "Nooo, say it isn’t so! 🥺",
+    "Oh no, I feel a little heartbroken! Are you really sure? 🥹",
+    "You must be teasing me... right? 😘",
+    "Uh-oh! Seems like someone is lying. 🤨",
+    "Oh, come on! You don’t mean that... do you? 🥺",
+    "Aww, are you sure? My heart says otherwise! 🥰",
+    "That can’t be true! I'm sensing some serious love vibes here! 💘",
+  ];
+
   useEffect(() => {
     backgrounds.forEach((bg) => {
       const img = new Image();
@@ -64,7 +76,7 @@ function Landing() {
     setNumberAttempt(numberAttempt + 1);
     setRandomBackground(backgrounds[numberAttempt % backgrounds.length]);
     setIsBackgroundChanged(true);
-    setText("Are you sure?");
+    setText(noMessages[numberAttempt % noMessages.length]);
 
     setTimeout(() => {
       setIsBackgroundChanged(false);
@@ -87,10 +99,6 @@ function Landing() {
       setNoButtonPosition({ top: newTop, left: newLeft });
       setIsNoButtonMoved(true);
     }
-  };
-
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
   };
 
   return (
@@ -158,10 +166,10 @@ function Landing() {
         open={openSnackbar}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
+        onClose={() => setOpenSnackbar(false)}
       >
         <Alert
-          onClose={handleCloseSnackbar}
+          onClose={() => setOpenSnackbar(false)}
           severity="warning"
           sx={{ width: "100%" }}
         >
