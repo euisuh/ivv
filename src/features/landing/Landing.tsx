@@ -104,30 +104,44 @@ function Landing() {
   return (
     <Box
       height="100vh"
-      width="90vw"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      sx={{ textAlign: "center", margin: "auto" }}
+      width="100vw"
+      position="relative"
+      sx={{ margin: "auto" }}
     >
+      {isBackgroundChanged && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage: `url(${randomBackground})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: 0.6,
+            zIndex: 1,
+          }}
+        />
+      )}
       <Box
         ref={contentRef}
         sx={{
-          width: "90%",
-          height: "90%",
+          width: "100%",
+          height: "100%",
           position: "relative",
-          alignContent: "center",
-          backgroundImage: `url(${
-            isBackgroundChanged ? randomBackground : ""
-          })`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity: isBackgroundChanged ? "0.6" : "",
+          zIndex: 2,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
         }}
       >
-        <Typography variant="h2">{text}</Typography>
+        <Typography variant="h2" sx={{ color: "black" }}>
+          {text}
+        </Typography>
         <Box
           sx={{
             mt: 4,
