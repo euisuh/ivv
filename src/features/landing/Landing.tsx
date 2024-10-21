@@ -155,13 +155,19 @@ function Landing() {
             variant="contained"
             color="primary"
             onClick={handleYesClick}
-            sx={{ display: isBackgroundChanged ? "none" : "" }}
+            sx={{
+              display: isBackgroundChanged ? "none" : "",
+              backgroundImage: `url(${randomBackground})`,
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
           >
             Yes
           </Button>
           <Button
             variant="contained"
-            color="secondary"
+            color="error"
             onClick={handleNoClick}
             ref={noButtonRef}
             sx={{
