@@ -153,6 +153,8 @@ function Landing() {
       );
   };
 
+  const timerRef = useRef<number | null>(null);
+
   const changeBackgroundAndTextTemporarily = () => {
     setNumberAttempt((prev) => prev + 1);
     setRandomBackground(
@@ -161,12 +163,15 @@ function Landing() {
     setIsBackgroundChanged(true);
     setText(shuffledNoMessages[numberAttempt % shuffledNoMessages.length]);
 
-    const timer = setTimeout(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(() => {
       setIsBackgroundChanged(false);
       setText("Do you love me?");
+      timerRef.current = null;
     }, 1500);
-
-    return () => clearTimeout(timer);
   };
 
   const handleNoClick = () => {
@@ -185,6 +190,14 @@ function Landing() {
       setIsNoButtonMoved(true);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
 
   const handleLinkClick = () => {
     setIsDialogOpen(true);
@@ -277,7 +290,6 @@ function Landing() {
             color="primary"
             onClick={handleYesClick}
             sx={{
-              display: isBackgroundChanged ? "none" : "block",
               backgroundImage: `url(${randomBackground})`,
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
@@ -296,7 +308,6 @@ function Landing() {
               position: isNoButtonMoved ? "absolute" : "static",
               top: noButtonPosition.top,
               left: noButtonPosition.left,
-              display: isBackgroundChanged ? "none" : "block",
             }}
           >
             No
@@ -330,7 +341,6 @@ function Landing() {
                   size="small"
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
-                  sx={{}}
                 />
               </>
             ) : correctAnswer ? (
