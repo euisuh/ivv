@@ -87,7 +87,19 @@ function Landing() {
     "Oh, come on! You don’t mean that... do you? 🥺",
     "Aww, are you sure? My heart says otherwise! 🥰",
     "That can’t be true! I'm sensing some serious love vibes here! 💘",
+    "I think my heart just skipped a beat... and not in a good way! 💔",
+    "Wait, let me refresh the page. That can't be right! 😜",
+    "Ouch! That one hurt. I thought we had something special! 😢",
+    "No way! That’s not what your eyes are saying! 👀",
+    "Is this some kind of reverse psychology? Cause it's working! 😏",
+    "I don’t believe you... care to reconsider? 😉",
+    "That answer seems suspicious! Are you sure you’re not just shy? 😏",
+    "Oh, come on! Deep down, I know you feel something! 😘",
+    "No? Really? My heart refuses to accept that! 💔",
+    "Wait, are you playing hard to get? Because it's working! 😏",
   ];
+
+  const shuffledNoMessages = shuffleArray(noMessages);
 
   const targetDate = useMemo(
     () =>
@@ -147,7 +159,7 @@ function Landing() {
       shuffledBackgrounds[numberAttempt % shuffledBackgrounds.length]
     );
     setIsBackgroundChanged(true);
-    setText(noMessages[numberAttempt % noMessages.length]);
+    setText(shuffledNoMessages[numberAttempt % shuffledNoMessages.length]);
 
     const timer = setTimeout(() => {
       setIsBackgroundChanged(false);
@@ -266,9 +278,7 @@ function Landing() {
             onClick={handleYesClick}
             sx={{
               display: isBackgroundChanged ? "none" : "block",
-              backgroundImage: isBackgroundChanged
-                ? `url(${randomBackground})`
-                : "none",
+              backgroundImage: `url(${randomBackground})`,
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
               backgroundPosition: "center",
