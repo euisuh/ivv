@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import {
   Alert,
   Box,
@@ -43,18 +43,28 @@ function Landing() {
   const contentRef = useRef<HTMLDivElement | null>(null);
   const noButtonRef = useRef<HTMLButtonElement | null>(null);
 
-  const backgrounds = [
-    background1,
-    background2,
-    background3,
-    background4,
-    background5,
-    background6,
-    background7,
-    background8,
-    background9,
-    background10,
-  ];
+  const backgrounds = useMemo(
+    () => [
+      background1,
+      background2,
+      background3,
+      background4,
+      background5,
+      background6,
+      background7,
+      background8,
+      background9,
+      background10,
+    ],
+    []
+  );
+
+  useEffect(() => {
+    backgrounds.forEach((bg) => {
+      const img = new Image();
+      img.src = bg;
+    });
+  }, [backgrounds]);
 
   const noMessages = [
     "Oops! I think you clicked the wrong button! 😆",
@@ -68,23 +78,19 @@ function Landing() {
     "That can’t be true! I'm sensing some serious love vibes here! 💘",
   ];
 
-  useEffect(() => {
-    backgrounds.forEach((bg) => {
-      const img = new Image();
-      img.src = bg;
-    });
-  }, []);
+  const targetDate = useMemo(
+    () =>
+      DateTime.fromObject(
+        { year: 2024, month: 10, day: 24, hour: 0, minute: 0, second: 0 },
+        { zone: "America/Montreal" }
+      ),
+    []
+  );
 
   useEffect(() => {
-    const targetDate = DateTime.fromObject(
-      { year: 2024, month: 10, day: 24, hour: 0, minute: 0, second: 0 },
-      { zone: "America/Montreal" }
-    );
-
     const updateTimer = () => {
       const now = DateTime.now().setZone("America/Montreal");
       const diff = targetDate.diff(now, "seconds");
-
       if (diff.seconds > 0) {
         const totalSeconds = Math.floor(diff.as("seconds"));
 
@@ -112,15 +118,10 @@ function Landing() {
     const timerInterval = setInterval(updateTimer, 1000);
 
     return () => clearInterval(timerInterval);
-  }, []);
+  }, [targetDate]);
 
   const handleYesClick = () => {
     const now = DateTime.now().setZone("America/Montreal");
-    const targetDate = DateTime.fromObject(
-      { year: 2024, month: 10, day: 24 },
-      { zone: "America/Montreal" }
-    );
-
     if (now < targetDate) setOpenSnackbar(true);
     else
       window.open(
@@ -130,30 +131,32 @@ function Landing() {
   };
 
   const changeBackgroundAndTextTemporarily = () => {
-    setNumberAttempt(numberAttempt + 1);
+    setNumberAttempt((prev) => prev + 1);
     setRandomBackground(backgrounds[numberAttempt % backgrounds.length]);
     setIsBackgroundChanged(true);
     setText(noMessages[numberAttempt % noMessages.length]);
 
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsBackgroundChanged(false);
       setText("Do you love me?");
     }, 1500);
+
+    return () => clearTimeout(timer);
   };
 
   const handleNoClick = () => {
     changeBackgroundAndTextTemporarily();
-    const content = contentRef.current;
-    const noButton = noButtonRef.current;
 
-    if (content && noButton) {
-      const contentRect = content.getBoundingClientRect();
-      const noRect = noButton.getBoundingClientRect();
+    if (contentRef.current && noButtonRef.current) {
+      const { height: contentHeight, width: contentWidth } =
+        contentRef.current.getBoundingClientRect();
+      const { height: noHeight, width: noWidth } =
+        noButtonRef.current.getBoundingClientRect();
 
-      const newTop = Math.random() * (contentRect.height - noRect.height);
-      const newLeft = Math.random() * (contentRect.width - noRect.width);
-
-      setNoButtonPosition({ top: newTop, left: newLeft });
+      setNoButtonPosition({
+        top: Math.random() * (contentHeight - noHeight),
+        left: Math.random() * (contentWidth - noWidth),
+      });
       setIsNoButtonMoved(true);
     }
   };
@@ -171,7 +174,8 @@ function Landing() {
   };
 
   const handleAnswerSubmit = () => {
-    if (answer.toLowerCase() === "guagua") {
+    const sanitizedAnswer = answer.trim().toLowerCase();
+    if (sanitizedAnswer === "guagua") {
       setShowMessage(true);
       setCorrectAnswer(true);
     } else {
@@ -220,8 +224,8 @@ function Landing() {
         <Typography variant="h2" sx={{ color: "black" }}>
           {text}
         </Typography>
-        {timeRemainingBool ? (
-          <Typography variant="inherit" color="textSecondary" sx={{ mt: 2 }}>
+        {!timeRemainingBool ? (
+          <Typography variant="inherit" color="textSecondary">
             {timeRemaining}
           </Typography>
         ) : (
@@ -248,8 +252,10 @@ function Landing() {
             color="primary"
             onClick={handleYesClick}
             sx={{
-              display: isBackgroundChanged ? "none" : "",
-              backgroundImage: `url(${randomBackground})`,
+              display: isBackgroundChanged ? "none" : "block",
+              backgroundImage: isBackgroundChanged
+                ? `url(${randomBackground})`
+                : "none",
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
               backgroundPosition: "center",
@@ -257,6 +263,7 @@ function Landing() {
           >
             Yes
           </Button>
+
           <Button
             variant="contained"
             color="error"
@@ -264,9 +271,9 @@ function Landing() {
             ref={noButtonRef}
             sx={{
               position: isNoButtonMoved ? "absolute" : "static",
-              top: isNoButtonMoved ? noButtonPosition.top : "auto",
-              left: isNoButtonMoved ? noButtonPosition.left : "auto",
-              display: isBackgroundChanged ? "none" : "",
+              top: noButtonPosition.top,
+              left: noButtonPosition.left,
+              display: isBackgroundChanged ? "none" : "block",
             }}
           >
             No
@@ -281,48 +288,50 @@ function Landing() {
         aria-modal="false"
         onClose={handleDialogClose}
       >
-        <DialogTitle sx={{ px: 4, pt: 4, mb: 2, pb: 0 }}>
-          Unlock the secret only Ivy can crack! 🔐🌟
-        </DialogTitle>
-        <DialogContent sx={{ px: 4, py: 0, mb: 2 }}>
-          {!showMessage ? (
-            <>
-              <DialogContentText>
-                Fill in the following content: Anthia ••• Ethan •••
+        <Box sx={{ px: 4, py: 4 }}>
+          <DialogTitle sx={{ p: 0, mb: 2 }}>
+            Unlock the secret only Ivy can crack! 🔐🌟
+          </DialogTitle>
+          <DialogContent sx={{ p: 0, mb: 2 }}>
+            {!showMessage ? (
+              <>
+                <DialogContentText sx={{ p: 0, mb: 2 }}>
+                  Fill in the following content: Anthia ••• Ethan •••
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  label="Your Answer"
+                  fullWidth
+                  size="small"
+                  value={answer}
+                  onChange={(e) => setAnswer(e.target.value)}
+                  sx={{}}
+                />
+              </>
+            ) : correctAnswer ? (
+              <DialogContentText sx={{ p: 0, mb: 2 }}>
+                Ivy, I know you've been having a tough time, and I believe in
+                you. 💖 Here's a little treat to keep you going—a Starbucks
+                coffee on me! ☕ Use this gift card to recharge and relax:{" "}
+                <strong>1234 5678 9012 3456</strong>. You've got this! 🌟
               </DialogContentText>
-              <TextField
-                autoFocus
-                margin="dense"
-                label="Your Answer"
-                fullWidth
-                variant="standard"
-                value={answer}
-                onChange={(e) => setAnswer(e.target.value)}
-              />
-            </>
-          ) : correctAnswer ? (
-            <DialogContentText>
-              Ivy, I know you've been having a tough time, and I believe in you.
-              💖 Here's a little treat to keep you going—a Starbucks coffee on
-              me! ☕ Use this gift card to recharge and relax:{" "}
-              <strong>1234 5678 9012 3456</strong>. You've got this! 🌟
-            </DialogContentText>
-          ) : (
-            <DialogContentText>
-              This is not Ivy. Only Ivy can resolve this.
-            </DialogContentText>
-          )}
-        </DialogContent>
-        <DialogActions sx={{ pb: 4, px: 4, pt: 0 }}>
-          {!showMessage ? (
-            <>
-              <Button onClick={handleDialogClose}>Cancel</Button>
-              <Button onClick={handleAnswerSubmit}>Submit</Button>
-            </>
-          ) : (
-            <Button onClick={handleDialogClose}>Close</Button>
-          )}
-        </DialogActions>
+            ) : (
+              <DialogContentText sx={{ p: 0, mb: 2 }}>
+                This is not Ivy. Only Ivy can resolve this.
+              </DialogContentText>
+            )}
+          </DialogContent>
+          <DialogActions sx={{ p: 0 }}>
+            {!showMessage ? (
+              <>
+                <Button onClick={handleDialogClose}>Cancel</Button>
+                <Button onClick={handleAnswerSubmit}>Submit</Button>
+              </>
+            ) : (
+              <Button onClick={handleDialogClose}>Close</Button>
+            )}
+          </DialogActions>
+        </Box>
       </Dialog>
 
       <Snackbar
