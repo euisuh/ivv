@@ -21,6 +21,7 @@ function Landing() {
   const [text, setText] = useState("Do you love me?");
   const [randomBackground, setRandomBackground] = useState<string>("");
   const [numberAttempt, setNumberAttempt] = useState(0);
+  const [timeRemaining, setTimeRemaining] = useState("");
 
   const contentRef = useRef<HTMLDivElement | null>(null);
   const noButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -55,6 +56,48 @@ function Landing() {
       const img = new Image();
       img.src = bg;
     });
+  }, []);
+
+  // Countdown timer logic
+  useEffect(() => {
+    const targetDate = DateTime.fromObject(
+      { year: 2024, month: 10, day: 24, hour: 0, minute: 0, second: 0 },
+      { zone: "America/Montreal" }
+    );
+
+    const updateTimer = () => {
+      const now = DateTime.now().setZone("America/Montreal");
+      const diff = targetDate.diff(now, "seconds");
+
+      if (diff.seconds > 0) {
+        const totalSeconds = Math.floor(diff.as("seconds"));
+
+        const days = Math.floor(totalSeconds / (24 * 3600));
+        const hours = Math.floor((totalSeconds % (24 * 3600)) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        let timeRemaining = "";
+
+        if (days > 0) timeRemaining += `${String(days).padStart(2, "0")}d `;
+        if (hours > 0) timeRemaining += `${String(hours).padStart(2, "0")}h `;
+        if (minutes > 0)
+          timeRemaining += `${String(minutes).padStart(2, "0")}m `;
+
+        timeRemaining += `${String(seconds).padStart(2, "0")}s`;
+
+        setTimeRemaining(timeRemaining.trim());
+
+        setTimeRemaining(timeRemaining.trim());
+      } else {
+        setTimeRemaining("The time has arrived!");
+      }
+    };
+
+    updateTimer();
+    const timerInterval = setInterval(updateTimer, 1000);
+
+    return () => clearInterval(timerInterval);
   }, []);
 
   const handleYesClick = () => {
@@ -142,6 +185,11 @@ function Landing() {
         <Typography variant="h2" sx={{ color: "black" }}>
           {text}
         </Typography>
+
+        <Typography variant="inherit" color="textSecondary" sx={{ mt: 2 }}>
+          {timeRemaining}
+        </Typography>
+
         <Box
           sx={{
             mt: 4,
