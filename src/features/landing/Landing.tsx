@@ -68,7 +68,10 @@ function Landing() {
     []
   );
 
-  const shuffledBackgrounds = shuffleArray(backgrounds);
+  const shuffledBackgrounds = useMemo(
+    () => shuffleArray(backgrounds),
+    [backgrounds]
+  );
 
   useEffect(() => {
     shuffledBackgrounds.forEach((bg) => {
@@ -77,29 +80,31 @@ function Landing() {
     });
   }, [shuffledBackgrounds]);
 
-  const noMessages = [
-    "Oops! I think you clicked the wrong button! 😆",
-    "Wait, did I hear that right? 😳",
-    "Nooo, say it isn’t so! 🥺",
-    "Oh no, I feel a little heartbroken! Are you really sure? 🥹",
-    "You must be teasing me... right? 😘",
-    "Uh-oh! Seems like someone is lying. 🤨",
-    "Oh, come on! You don’t mean that... do you? 🥺",
-    "Aww, are you sure? My heart says otherwise! 🥰",
-    "That can’t be true! I'm sensing some serious love vibes here! 💘",
-    "I think my heart just skipped a beat... and not in a good way! 💔",
-    "Wait, let me refresh the page. That can't be right! 😜",
-    "Ouch! That one hurt. I thought we had something special! 😢",
-    "No way! That’s not what your eyes are saying! 👀",
-    "Is this some kind of reverse psychology? Cause it's working! 😏",
-    "I don’t believe you... care to reconsider? 😉",
-    "That answer seems suspicious! Are you sure you’re not just shy? 😏",
-    "Oh, come on! Deep down, I know you feel something! 😘",
-    "No? Really? My heart refuses to accept that! 💔",
-    "Wait, are you playing hard to get? Because it's working! 😏",
-  ];
-
-  const shuffledNoMessages = shuffleArray(noMessages);
+  const noMessages = useMemo(
+    () =>
+      shuffleArray([
+        "Oops! I think you clicked the wrong button! 😆",
+        "Wait, did I hear that right? 😳",
+        "Nooo, say it isn’t so! 🥺",
+        "Oh no, I feel a little heartbroken! Are you really sure? 🥹",
+        "You must be teasing me... right? 😘",
+        "Uh-oh! Seems like someone is lying. 🤨",
+        "Oh, come on! You don’t mean that... do you? 🥺",
+        "Aww, are you sure? My heart says otherwise! 🥰",
+        "That can’t be true! I'm sensing some serious love vibes here! 💘",
+        "I think my heart just skipped a beat... and not in a good way! 💔",
+        "Wait, let me refresh the page. That can't be right! 😜",
+        "Ouch! That one hurt. I thought we had something special! 😢",
+        "No way! That’s not what your eyes are saying! 👀",
+        "Is this some kind of reverse psychology? Cause it's working! 😏",
+        "I don’t believe you... care to reconsider? 😉",
+        "That answer seems suspicious! Are you sure you’re not just shy? 😏",
+        "Oh, come on! Deep down, I know you feel something! 😘",
+        "No? Really? My heart refuses to accept that! 💔",
+        "Wait, are you playing hard to get? Because it's working! 😏",
+      ]),
+    []
+  );
 
   const targetDate = useMemo(
     () =>
@@ -161,7 +166,7 @@ function Landing() {
       shuffledBackgrounds[numberAttempt % shuffledBackgrounds.length]
     );
     setIsBackgroundChanged(true);
-    setText(shuffledNoMessages[numberAttempt % shuffledNoMessages.length]);
+    setText(noMessages[numberAttempt % noMessages.length]);
 
     if (timerRef.current) {
       clearTimeout(timerRef.current);
