@@ -24,7 +24,7 @@ import background7 from "../../assets/background/7.jpg";
 import background8 from "../../assets/background/8.jpg";
 import background9 from "../../assets/background/9.jpg";
 import background10 from "../../assets/background/10.jpg";
-import { blue, deepOrange, pink, red } from "@mui/material/colors";
+import { blue, deepOrange, red } from "@mui/material/colors";
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = array.slice();
