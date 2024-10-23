@@ -25,6 +25,15 @@ import background8 from "../../assets/background/8.jpg";
 import background9 from "../../assets/background/9.jpg";
 import background10 from "../../assets/background/10.jpg";
 
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = array.slice();
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 function Landing() {
   const [noButtonPosition, setNoButtonPosition] = useState({ top: 0, left: 0 });
   const [isNoButtonMoved, setIsNoButtonMoved] = useState(false);
@@ -59,12 +68,14 @@ function Landing() {
     []
   );
 
+  const shuffledBackgrounds = shuffleArray(backgrounds);
+
   useEffect(() => {
-    backgrounds.forEach((bg) => {
+    shuffledBackgrounds.forEach((bg) => {
       const img = new Image();
       img.src = bg;
     });
-  }, [backgrounds]);
+  }, [shuffledBackgrounds]);
 
   const noMessages = [
     "Oops! I think you clicked the wrong button! 😆",
@@ -132,7 +143,9 @@ function Landing() {
 
   const changeBackgroundAndTextTemporarily = () => {
     setNumberAttempt((prev) => prev + 1);
-    setRandomBackground(backgrounds[numberAttempt % backgrounds.length]);
+    setRandomBackground(
+      shuffledBackgrounds[numberAttempt % shuffledBackgrounds.length]
+    );
     setIsBackgroundChanged(true);
     setText(noMessages[numberAttempt % noMessages.length]);
 
