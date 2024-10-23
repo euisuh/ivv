@@ -24,6 +24,7 @@ import background7 from "../../assets/background/7.jpg";
 import background8 from "../../assets/background/8.jpg";
 import background9 from "../../assets/background/9.jpg";
 import background10 from "../../assets/background/10.jpg";
+import esno from "../../assets/esno.jpg";
 import { blue, deepOrange, red } from "@mui/material/colors";
 
 function shuffleArray<T>(array: T[]): T[] {
@@ -80,6 +81,9 @@ function Landing() {
   );
 
   useEffect(() => {
+    const esnoImg = new Image();
+    esnoImg.src = esno;
+
     shuffledBackgrounds.forEach((bg) => {
       const img = new Image();
       img.src = bg;
@@ -394,6 +398,10 @@ function Landing() {
             onClick={handleNoClick}
             ref={noButtonRef}
             sx={{
+              backgroundImage: isNoButtonMoved ? `url(${esno})` : "",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
               position: isNoButtonMoved ? "absolute" : "static",
               top: noButtonPosition.top,
               left: noButtonPosition.left,
