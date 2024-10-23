@@ -338,10 +338,11 @@ function Landing() {
                 sx={{ p: 0, mb: 2, fontSize: { xs: "14px", sm: "18px" } }}
               >
                 Ivy, I know you've been having a tough time, and I believe in
-                you. 💖 Here's a little treat to keep you going—a Starbucks
-                coffee on me! ☕ Use this gift card to recharge and relax:{" "}
-                <strong>6321466029656071 / 49978337</strong>. You've got this!
-                🌟
+                you. 💖 Here's a little treat to keep you going—the next
+                Starbucks is on me! ☕🍰 Use this gift card to recharge and
+                relax: <strong>6321466029656071 / 49978337</strong>. You've got
+                this! 🌟 Don't forget to exercise every day to keep yourself
+                healthy.
               </DialogContentText>
             ) : (
               <DialogContentText sx={{ p: 0, mb: 2 }}>
@@ -352,11 +353,15 @@ function Landing() {
           <DialogActions sx={{ p: 0 }}>
             {!showMessage ? (
               <>
-                <Button onClick={handleDialogClose}>Cancel</Button>
+                <Button color="error" onClick={handleDialogClose}>
+                  Cancel
+                </Button>
                 <Button onClick={handleAnswerSubmit}>Submit</Button>
               </>
             ) : (
-              <Button onClick={handleDialogClose}>Close</Button>
+              <Button color="error" onClick={handleDialogClose}>
+                Close
+              </Button>
             )}
           </DialogActions>
         </Box>
