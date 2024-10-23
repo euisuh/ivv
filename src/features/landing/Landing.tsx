@@ -224,7 +224,7 @@ function Landing() {
         <Typography variant="h2" sx={{ color: "black" }}>
           {text}
         </Typography>
-        {!timeRemainingBool ? (
+        {timeRemainingBool ? (
           <Typography variant="inherit" color="textSecondary">
             {timeRemaining}
           </Typography>
@@ -289,7 +289,9 @@ function Landing() {
         onClose={handleDialogClose}
       >
         <Box sx={{ px: 4, py: 4 }}>
-          <DialogTitle sx={{ p: 0, mb: 2 }}>
+          <DialogTitle
+            sx={{ p: 0, mb: 2, fontSize: { xs: "22px", sm: "26px" } }}
+          >
             Unlock the secret only Ivy can crack! 🔐🌟
           </DialogTitle>
           <DialogContent sx={{ p: 0, mb: 2 }}>
@@ -309,11 +311,14 @@ function Landing() {
                 />
               </>
             ) : correctAnswer ? (
-              <DialogContentText sx={{ p: 0, mb: 2 }}>
+              <DialogContentText
+                sx={{ p: 0, mb: 2, fontSize: { xs: "14px", sm: "18px" } }}
+              >
                 Ivy, I know you've been having a tough time, and I believe in
                 you. 💖 Here's a little treat to keep you going—a Starbucks
                 coffee on me! ☕ Use this gift card to recharge and relax:{" "}
-                <strong>1234 5678 9012 3456</strong>. You've got this! 🌟
+                <strong>6321466029656071 / 49978337</strong>. You've got this!
+                🌟
               </DialogContentText>
             ) : (
               <DialogContentText sx={{ p: 0, mb: 2 }}>
