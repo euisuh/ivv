@@ -48,6 +48,11 @@ function Landing() {
   const [answer, setAnswer] = useState("");
   const [showMessage, setShowMessage] = useState(false);
   const [correctAnswer, setCorrectAnswer] = useState(false);
+  const [disclaimerOpen, setDisclaimerOpen] = useState(true); // Initially show disclaimer
+
+  const handleDisclaimerClose = () => {
+    setDisclaimerOpen(false); // Close disclaimer when Ivy clicks accept
+  };
 
   const contentRef = useRef<HTMLDivElement | null>(null);
   const noButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -233,6 +238,62 @@ function Landing() {
       position="relative"
       sx={{ margin: "auto" }}
     >
+      <Dialog
+        open={disclaimerOpen}
+        fullScreen
+        PaperProps={{
+          sx: {
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+          },
+        }}
+      >
+        <Box sx={{ px: 4, py: 4 }}>
+          <DialogTitle
+            sx={{ p: 0, mb: 2, fontSize: { xs: "22px", sm: "26px" } }}
+          >
+            ⚠️ Disclaimer ⚠️
+          </DialogTitle>
+          <DialogContent sx={{ p: 0, mb: 2 }}>
+            <Typography
+              sx={{ p: 0, mb: 2, fontSize: { xs: "16px", sm: "20px" } }}
+            >
+              This page is dedicated exclusively to Ivy. ❤️💖❤️
+            </Typography>
+            <Typography
+              sx={{ p: 0, mb: 2, fontSize: { xs: "14px", sm: "18px" } }}
+            >
+              If you are not Ivy, the publisher takes no responsibility for any
+              cringe you might or might not experience. Please proceed at your
+              own risk!
+            </Typography>
+          </DialogContent>
+          <DialogActions sx={{ p: 0 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleDisclaimerClose}
+              style={{
+                whiteSpace: "nowrap",
+              }}
+            >
+              It's me&nbsp;
+              <span style={{ fontFamily: '"Noto Sans KR", sans-serif' }}>
+                떡볶이
+              </span>
+            </Button>
+
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => alert("Who are you? 🤔")}
+            >
+              Proceed
+            </Button>
+          </DialogActions>
+        </Box>
+      </Dialog>
       {isBackgroundChanged && (
         <Box
           sx={{
