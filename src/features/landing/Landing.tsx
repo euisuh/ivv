@@ -24,6 +24,7 @@ import background7 from "../../assets/background/7.jpg";
 import background8 from "../../assets/background/8.jpg";
 import background9 from "../../assets/background/9.jpg";
 import background10 from "../../assets/background/10.jpg";
+import { blue, deepOrange, pink, red } from "@mui/material/colors";
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = array.slice();
@@ -246,10 +247,19 @@ function Landing() {
             justifyContent: "center",
             alignItems: "center",
             textAlign: "center",
+            backgroundColor: red[50],
           },
         }}
       >
-        <Box sx={{ px: 4, py: 4 }}>
+        <Box
+          sx={{
+            px: 4,
+            py: 4,
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
           <DialogTitle
             sx={{ p: 0, mb: 2, fontSize: { xs: "22px", sm: "26px" } }}
           >
@@ -259,7 +269,7 @@ function Landing() {
             <Typography
               sx={{ p: 0, mb: 2, fontSize: { xs: "16px", sm: "20px" } }}
             >
-              This page is dedicated exclusively to Ivy. ❤️💖❤️
+              This page is dedicated exclusively to Ivy. ❤️
             </Typography>
             <Typography
               sx={{ p: 0, mb: 2, fontSize: { xs: "14px", sm: "18px" } }}
@@ -272,9 +282,9 @@ function Landing() {
           <DialogActions sx={{ p: 0 }}>
             <Button
               variant="contained"
-              color="primary"
               onClick={handleDisclaimerClose}
-              style={{
+              sx={{
+                backgroundColor: blue[500],
                 whiteSpace: "nowrap",
               }}
             >
@@ -286,8 +296,8 @@ function Landing() {
 
             <Button
               variant="contained"
-              color="error"
               onClick={() => alert("Who are you? 🤔")}
+              sx={{ backgroundColor: red[500] }}
             >
               Proceed
             </Button>
@@ -323,9 +333,20 @@ function Landing() {
           justifyContent: "center",
           alignItems: "center",
           textAlign: "center",
+          backgroundColor: !isBackgroundChanged ? red[50] : "none",
         }}
       >
-        <Typography variant="h2" sx={{ color: "black" }}>
+        <Typography
+          variant="h2"
+          sx={{
+            color: deepOrange[600],
+            fontWeight: !isBackgroundChanged ? 400 : 200,
+            fontSize: {
+              xs: !isBackgroundChanged ? "54px" : "42px",
+              sm: !isBackgroundChanged ? "96px" : "84px",
+            },
+          }}
+        >
           {text}
         </Typography>
         {timeRemainingBool ? (
@@ -333,14 +354,17 @@ function Landing() {
             {timeRemaining}
           </Typography>
         ) : (
-          <Button
-            variant="outlined"
-            size="small"
-            color="success"
-            onClick={handleLinkClick}
-          >
-            Yay
-          </Button>
+          !isBackgroundChanged && (
+            <Button
+              variant="contained"
+              onClick={handleLinkClick}
+              sx={{
+                backgroundColor: red[100],
+              }}
+            >
+              💖
+            </Button>
+          )
         )}
         <Box
           sx={{
@@ -353,13 +377,13 @@ function Landing() {
         >
           <Button
             variant="contained"
-            color="primary"
             onClick={handleYesClick}
             sx={{
               backgroundImage: `url(${randomBackground})`,
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
               backgroundPosition: "center",
+              backgroundColor: blue[500],
             }}
           >
             Yes
@@ -367,13 +391,13 @@ function Landing() {
 
           <Button
             variant="contained"
-            color="error"
             onClick={handleNoClick}
             ref={noButtonRef}
             sx={{
               position: isNoButtonMoved ? "absolute" : "static",
               top: noButtonPosition.top,
               left: noButtonPosition.left,
+              backgroundColor: red[500],
             }}
           >
             No
@@ -387,6 +411,14 @@ function Landing() {
         maxWidth="md"
         aria-modal="false"
         onClose={handleDialogClose}
+        PaperProps={{
+          sx: {
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            backgroundColor: deepOrange[50],
+          },
+        }}
       >
         <Box sx={{ px: 4, py: 4 }}>
           <DialogTitle
@@ -398,7 +430,8 @@ function Landing() {
             {!showMessage ? (
               <>
                 <DialogContentText sx={{ p: 0, mb: 2 }}>
-                  Fill in the following content: Anthia ••• Ethan •••
+                  Fill in the following content: <br />
+                  Anthia ••• Ethan •••
                 </DialogContentText>
                 <TextField
                   autoFocus
@@ -429,13 +462,15 @@ function Landing() {
           <DialogActions sx={{ p: 0 }}>
             {!showMessage ? (
               <>
-                <Button color="error" onClick={handleDialogClose}>
+                <Button onClick={handleDialogClose} sx={{ color: red[500] }}>
                   Cancel
                 </Button>
-                <Button onClick={handleAnswerSubmit}>Submit</Button>
+                <Button onClick={handleAnswerSubmit} sx={{ color: blue[500] }}>
+                  Submit
+                </Button>
               </>
             ) : (
-              <Button color="error" onClick={handleDialogClose}>
+              <Button onClick={handleDialogClose} sx={{ color: red[500] }}>
                 Close
               </Button>
             )}
